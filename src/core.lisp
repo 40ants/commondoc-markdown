@@ -4,7 +4,8 @@
   (:import-from #:3bmd)
   (:import-from #:common-doc)
   (:export
-   #:markdown))
+   #:markdown
+   #:make-markdown-link))
 (in-package commondoc-markdown)
 
 
@@ -13,10 +14,28 @@
   (:documentation "The Markdown format."))
 
 
-(defun make-text-node (pieces)
-  (common-doc:make-text
-   (apply 'concatenate 'string
-          pieces)))
+(common-doc:define-node markdown-link (common-doc:link)
+  ((definition :accessor markdown-link-definition
+               :initarg :definition
+               :initform nil
+               :type (or null string)
+               :documentation "A definition slug for the linked document."))
+  (:documentation "A named link like [Some text][the-id].
+
+                   These links can be replaced with a web-link if id is
+                   defined somewhere in the markdown text."))
+
+
+(defun make-markdown-link (children &key definition)
+  (make-instance 'markdown-link
+                 :children (uiop:ensure-list children)
+                 :definition definition))
+
+
+(defmethod common-doc.ops:node-specific-equal ((link-a markdown-link)
+                                               (link-b markdown-link))
+  (equal (markdown-link-definition link-a)
+         (markdown-link-definition link-b)))
 
 
 (defun make-inline-nodes (pieces)
@@ -49,6 +68,48 @@
                (return (nreverse results))))))
 
 
+;; This var will be bound during with-collected-references macro body execution
+(defvar *link-references*)
+
+
+(defun call-with-collected-references (nodes func)
+  (let ((*link-references* (make-hash-table :test 'equal)))
+    (labels ((process (node)
+               (typecase node
+                 (list
+                  (cond
+                    ((and (> (length node) 1)
+                          (eql (car node) :reference))
+                     (let* ((content (cdr node))
+                            (definition (apply 'concatenate
+                                               'string
+                                               ;; If label is a space separated
+                                               ;; string, then 3bmd will make it
+                                               ;; a list of multiple strings:
+                                               (getf content :label)))
+                            (url (getf content :source)))
+                       (setf (gethash
+                              ;; Making reference searching case insensitive
+                              (string-downcase definition)
+                              *link-references* )
+                             url))))))))
+      (mapc #'process nodes))
+    (funcall func)))
+
+
+(defmacro with-collected-references ((nodes) &body body)
+  `(call-with-collected-references ,nodes
+                                   (lambda ()
+                                     ,@body)))
+
+
+(defun find-url (definition)
+  (unless (boundp '*link-references*)
+    (error "Function FIND-URL should be called inside WITH-COLLECTED-REFERENCES macro."))
+  (gethash (string-downcase definition)
+           *link-references*))
+
+
 (defun create-node (3bmd-node)
   (let ((node-type (car 3bmd-node))
         (content (cdr 3bmd-node)))
@@ -64,6 +125,25 @@
       (:paragraph
        (common-doc:make-paragraph
         (make-inline-nodes content)))
+      ;; We ignore references, because they are used
+      ;; only for making weblinks
+      (:reference
+       nil)
+      (:reference-link
+       (let* ((label (getf content :label))
+              (label-nodes (make-inline-nodes label))
+              (definition (getf content :definition))
+              (url (find-url definition)))
+         (if url
+             (common-doc:make-web-link url
+                                       label-nodes)
+             (make-markdown-link label-nodes
+                                 :definition definition))))
+      (:explicit-link
+       (let ((url (getf content :source))
+             (label (getf content :label)))
+         (common-doc:make-web-link url
+                                   (make-inline-nodes label))))
       (:code
        (common-doc:make-code
         (make-inline-nodes content)))
@@ -73,11 +153,18 @@
          (common-doc:make-code-block lang
                                      (common-doc:make-text code)))))))
 
+(defun parse-markdown (string)
+  "This is just a helper to reuse in tests"
+  (let ((3bmd-code-blocks:*code-blocks* t))
+    (3bmd-grammar:parse-doc string)))
+
 
 (defmethod common-doc.format:parse-document ((format markdown) (string string))
-  (let* ((parsed-tree (let ((3bmd-code-blocks:*code-blocks* t))
-                        (3bmd-grammar:parse-doc string)))
-         (nodes (mapcar #'create-node parsed-tree)))
+  (let* ((parsed-tree (parse-markdown string))
+         (nodes (with-collected-references (parsed-tree)
+                  (remove
+                   nil ;; create-node can return NIL if node should be skipped
+                   (mapcar #'create-node parsed-tree)))))
     (if (= (length nodes) 1)
         (first nodes)
         (common-doc:make-content nodes))))

@@ -4,18 +4,24 @@
                 #:testing
                 #:deftest)
   (:import-from #:common-doc
+                #:make-web-link
                 #:make-code-block
                 #:make-code
                 #:make-content
                 #:make-section
                 #:make-text
-                #:make-paragraph))
+                #:make-paragraph)
+  (:import-from #:commondoc-markdown
+                #:make-markdown-link))
 (in-package commondoc-markdown-test/core)
 
 
 (defun p (text)
   (common-doc.format:parse-document (make-instance 'commondoc-markdown:markdown)
                                     text))
+
+(defun pp (text)
+  (commondoc-markdown::parse-markdown text))
 
 ;; For debugging it is useful to render node to HTML
 (defun r (node)
@@ -140,3 +146,38 @@ Now you know everything!
 
 World"))
                             (make-paragraph (make-text "Now you know everything!")))))))
+
+
+(deftest test-links
+  (testing "External link"
+    (compare (p "A text with [a link](https://40ants.com).")
+             (make-paragraph (list
+                              (make-text "A text with ")
+                              (make-web-link "https://40ants.com"
+                                             (make-text "a link"))
+                              (make-text ".")))))
+  
+  (testing "Link with empty definition"
+    (compare (p "A text with [a link][].")
+             (make-paragraph (list
+                              (make-text "A text with ")
+                              (make-markdown-link (make-text "a link"))
+                              (make-text ".")))))
+
+  (testing "Link with not defined definition"
+    (compare (p "A text with [a link][function].")
+             (make-paragraph (list
+                              (make-text "A text with ")
+                              (make-markdown-link (make-text "a link")
+                                                  :definition "function")
+                              (make-text ".")))))
+
+  (testing "Link with defined definition"
+    (compare (p "A text with [a link][function].
+
+[function]: https://40ants.com/some-func")
+             (make-paragraph (list
+                              (make-text "A text with ")
+                              (make-web-link "https://40ants.com/some-func"
+                                             (make-text "a link"))
+                              (make-text "."))))))
