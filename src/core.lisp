@@ -66,11 +66,17 @@
         (make-inline-nodes content)))
       (:code
        (common-doc:make-code
-        (make-inline-nodes content))))))
+        (make-inline-nodes content)))
+      (3bmd-code-blocks::code-block
+       (let* ((lang (getf content :lang))
+              (code (getf content :content)))
+         (common-doc:make-code-block lang
+                                     (common-doc:make-text code)))))))
 
 
 (defmethod common-doc.format:parse-document ((format markdown) (string string))
-  (let* ((parsed-tree (3bmd-grammar:parse-doc string))
+  (let* ((parsed-tree (let ((3bmd-code-blocks:*code-blocks* t))
+                        (3bmd-grammar:parse-doc string)))
          (nodes (mapcar #'create-node parsed-tree)))
     (if (= (length nodes) 1)
         (first nodes)

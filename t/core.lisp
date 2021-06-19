@@ -4,6 +4,7 @@
                 #:testing
                 #:deftest)
   (:import-from #:common-doc
+                #:make-code-block
                 #:make-code
                 #:make-content
                 #:make-section
@@ -95,3 +96,47 @@ The third paragraph!
                                      (make-code (make-text "foo bar"))
                                      (make-text " function.")))
                (make-paragraph (make-text "The third paragraph!")))))))
+
+
+(deftest test-multiline-code
+  (testing "Simple code"
+    (compare (p "```
+Hello
+
+World
+```")
+             (make-code-block ""
+                              (make-text "Hello
+
+World"))))
+  
+  (testing "Code with language"
+    (compare (p "```lisp
+Hello
+
+World
+```")
+             (make-code-block "lisp"
+                              (make-text "Hello
+
+World"))))
+  
+  (testing "Code surrounded with paragraphs"
+    (compare (p "Here is an example:
+
+```lisp
+Hello
+
+World
+```
+
+Now you know everything!
+
+")
+             (make-content (list
+                            (make-paragraph (make-text "Here is an example:"))
+                            (make-code-block "lisp"
+                                             (make-text "Hello
+
+World"))
+                            (make-paragraph (make-text "Now you know everything!")))))))

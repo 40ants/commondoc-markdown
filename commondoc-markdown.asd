@@ -7,5 +7,7 @@
   :description "Converter from Markdown to CommonDoc."
   :class :package-inferred-system
   :pathname "src"
-  :depends-on ("commondoc-markdown/core")
+  :depends-on ("3bmd"
+               "3bmd-ext-code-blocks"
+               "commondoc-markdown/core")
   :in-order-to ((test-op (test-op commondoc-markdown-test))))
