@@ -181,3 +181,13 @@ World"))
                               (make-web-link "https://40ants.com/some-func"
                                              (make-text "a link"))
                               (make-text "."))))))
+
+
+(deftest test-code-links
+  (testing "External link"
+    (compare (p "A text with [`a link`][function].")
+             (make-paragraph (list
+                              (make-text "A text with ")
+                              (make-markdown-link (make-code (make-text "a link"))
+                                                  :definition "function")
+                              (make-text "."))))))
