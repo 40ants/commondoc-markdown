@@ -73,6 +73,16 @@
                 stream))
 
 
+;; Links
+
+(defmethod common-doc.format:emit-document :before ((format markdown)
+                                                    (node common-doc:document-node)
+                                                    stream)
+  (when (common-doc:reference node)
+    (format stream "<a id=\"~A\"></a>~2&"
+            (common-doc:reference node))))
+
+
 (defmethod common-doc.format:emit-document ((format markdown)
                                             (node common-doc:web-link)
                                             stream)
@@ -82,6 +92,20 @@
 
   (format stream "(~A)"
           (common-doc:uri node)))
+
+
+(defmethod common-doc.format:emit-document ((format markdown)
+                                            (node common-doc:document-link)
+                                            stream)
+  (write-char #\[ stream)
+  (call-next-method)
+  (write-char #\] stream)
+
+  (let ((uri (format nil "~A#~A"
+                     (common-doc:document-reference node)
+                     (common-doc:node-reference node))))
+    (format stream "(~A)"
+            uri)))
 
 
 (defmethod common-doc.format:emit-document ((format markdown)
