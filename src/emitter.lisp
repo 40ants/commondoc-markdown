@@ -18,10 +18,7 @@
   (write-header-prefix stream)
   (loop for piece in (uiop:ensure-list title)
         do (common-doc.format:emit-document format piece stream))
-  (format stream "~2&")
-  ;; (terpri stream)
-  ;; (terpri stream)
-  )
+  (format stream "~2&"))
 
 
 (defmethod common-doc.format:emit-document ((format markdown)
