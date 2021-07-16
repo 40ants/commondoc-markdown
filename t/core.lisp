@@ -27,6 +27,10 @@
 (defun r (node)
   (common-doc.format:emit-document (make-instance 'common-html:html) node t))
 
+(defun rr (node)
+  (with-output-to-string (stream)
+    (common-doc.format:emit-document (make-instance 'common-html:html) node stream)))
+
 
 (defmacro compare (left right)
   `(rove:ok (common-doc.ops:node-equal ,left ,right)))

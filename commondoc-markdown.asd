@@ -9,5 +9,6 @@
   :pathname "src"
   :depends-on ("3bmd"
                "3bmd-ext-code-blocks"
-               "commondoc-markdown/core")
+               "commondoc-markdown/core"
+               "commondoc-markdown/emitter")
   :in-order-to ((test-op (test-op commondoc-markdown-test))))

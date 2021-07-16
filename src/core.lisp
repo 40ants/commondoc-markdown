@@ -5,7 +5,9 @@
   (:import-from #:common-doc)
   (:export
    #:markdown
-   #:make-markdown-link))
+   #:make-markdown-link
+   #:markdown-link
+   #:markdown-link-definition))
 (in-package commondoc-markdown)
 
 
@@ -147,11 +149,26 @@
       (:code
        (common-doc:make-code
         (make-inline-nodes content)))
+      (:verbatim ;; Code indented by 4 spaces
+       (common-doc:make-code-block "text"
+                                   (make-inline-nodes content)))
       (3bmd-code-blocks::code-block
        (let* ((lang (getf content :lang))
               (code (getf content :content)))
          (common-doc:make-code-block lang
-                                     (common-doc:make-text code)))))))
+                                     (common-doc:make-text code))))
+      (:bullet-list
+       (common-doc:make-unordered-list
+        (mapcar #'create-node
+                content)))
+      (:counted-list
+       (common-doc:make-ordered-list
+        (mapcar #'create-node
+                content)))
+      (:list-item
+       (common-doc:make-list-item
+        (mapcar #'create-node
+                content))))))
 
 (defun parse-markdown (string)
   "This is just a helper to reuse in tests"
