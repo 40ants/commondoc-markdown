@@ -3,17 +3,17 @@
   (:nicknames #:commondoc-markdown/core)
   (:import-from #:3bmd)
   (:import-from #:common-doc)
+  (:import-from #:commondoc-markdown/format
+                #:markdown)
+  (:import-from #:commondoc-markdown/raw-html
+                #:make-raw-html-block
+                #:make-raw-inline-html)
   (:export
    #:markdown
    #:make-markdown-link
    #:markdown-link
    #:markdown-link-definition))
 (in-package commondoc-markdown)
-
-
-(defclass markdown (common-doc.format:document-format)
-  ()
-  (:documentation "The Markdown format."))
 
 
 (common-doc:define-node markdown-link (common-doc:link)
@@ -116,6 +116,17 @@
   (let ((node-type (car 3bmd-node))
         (content (cdr 3bmd-node)))
     (ecase node-type
+      ;; 3bmd produces :raw-html for lines like this:
+      ;; <s>Refactor code and make a core package with only a few dependencies.</s>
+      (:raw-html
+       (make-raw-inline-html (first content)))
+      ;; and :html nodes are created for a multiline html code
+      (:html
+       (make-raw-html-block (first content)))
+      (:emph
+       (common-doc:make-italic (make-inline-nodes content)))
+      (:strong
+       (common-doc:make-bold (make-inline-nodes content)))
       (:plain
        ;; Not sure if it is a good idea to
        ;; make :PLAIN a paragraph,
