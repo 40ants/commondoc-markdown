@@ -124,18 +124,56 @@
   (format stream "~2&"))
 
 
+(defun get-line-backticks-count (line)
+  (let* ((backticks-count (count #\` line)))
+    ;; We only interested in lines having
+    ;; only backticks:
+    (if (= (length line)
+           backticks-count)
+        backticks-count
+        0)))
+
+
+(defun get-num-required-backticks (code-text)
+  "If code includes examples of markdown code blocks, then we should
+   select higher number of backticks.
+
+   This function returns a number of backticks, required to
+   wrap given CODE-TEXT into a Markdown code-block."
+
+  (loop with max-backticks-count = 0
+        for line in (str:split #\Newline code-text)
+        do (setf max-backticks-count
+                 (max max-backticks-count
+                      (get-line-backticks-count line)))
+        finally (return (max 3
+                             (1+ max-backticks-count)))))
+
+
+(defun make-fence (num-backticks)
+  (with-output-to-string (s)
+    (loop repeat num-backticks
+          do (write-char  #\` s))))
+
+
 (defmethod common-doc.format:emit-document ((format markdown)
                                             (node common-doc:code-block)
                                             stream)
-  (if (common-doc:language node)
-      (format stream
-              "```~A~%"
-              (common-doc:language node))
-      (format stream
-              "```~%"))
-  (call-next-method)
-  (format stream
-          "~&```~%"))
+  (let* ((content (with-output-to-string (s)
+                    (call-next-method format node s)))
+         (fence (make-fence (get-num-required-backticks content))))
+    (if (common-doc:language node)
+        (format stream
+                "~A~A~%"
+                fence
+                (common-doc:language node))
+        (format stream
+                "~A~%"
+                fence))
+    (write-string content stream)
+    (format stream
+            "~&~A~%"
+            fence)))
 
 ;;; Lists
 
