@@ -1,11 +1,14 @@
 (defpackage #:commondoc-markdown/emitter
   (:use #:cl)
   (:import-from #:commondoc-markdown/core
-                #:markdown))
+                #:markdown)
+  (:export #:*emit-section-anchors*))
 (in-package commondoc-markdown/emitter)
 
 
 (defvar *header-level*)
+
+(defvar *emit-section-anchors* t)
 
 
 (defun write-header-prefix (stream)
@@ -78,7 +81,8 @@
 (defmethod common-doc.format:emit-document :before ((format markdown)
                                                     (node common-doc:document-node)
                                                     stream)
-  (when (common-doc:reference node)
+  (when (and (common-doc:reference node)
+             *emit-section-anchors*)
     (format stream "<a id=\"~A\"></a>~2&"
             (common-doc:reference node))))
 
