@@ -1,6 +1,7 @@
 (uiop:define-package #:commondoc-markdown-test/core
   (:use #:cl)
   (:import-from #:rove
+                #:ok
                 #:testing
                 #:deftest)
   (:import-from #:common-doc
@@ -30,6 +31,12 @@
 (defun rr (node)
   (with-output-to-string (stream)
     (common-doc.format:emit-document (make-instance 'common-html:html) node stream)))
+
+(defun mm (node)
+  "Renders document into a markdown string"
+  (with-output-to-string (stream)
+    (common-doc.format:emit-document (make-instance 'commondoc-markdown:markdown)
+                                     node stream)))
 
 
 (defmacro compare (left right)
@@ -195,3 +202,22 @@ World"))
                               (make-markdown-link (make-code (make-text "a link"))
                                                   :definition "function")
                               (make-text "."))))))
+
+
+(deftest test-link-references
+  (testing "External link"
+    (let ((result (mm
+                   (make-paragraph (list
+                                    (make-text "A text with ")
+                                    (make-web-link "https://40ants.com"
+                                                   (make-text "a link 1"))
+                                    (make-text " and ")
+                                    (make-web-link "https://40ants.com"
+                                                   (make-text "a link 2"))
+                                    (make-text "."))))))
+      (ok (string=
+           "A text with [a link 1][9bf8] and [a link 2][9bf8].
+
+
+[9bf8]: https://40ants.com"
+           result)))))

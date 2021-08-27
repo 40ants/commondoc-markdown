@@ -2,7 +2,8 @@
   (:use #:cl)
   (:import-from #:commondoc-markdown/core
                 #:markdown)
-  (:export #:*emit-section-anchors*))
+  (:export #:*emit-section-anchors*
+           #:*min-link-hash-length*))
 (in-package commondoc-markdown/emitter)
 
 
@@ -78,6 +79,56 @@
 
 ;; Links
 
+(defvar *min-link-hash-length* 4
+  "Minumum length of the hash for generated markdown links.")
+
+(defvar *link->hash*)
+(defvar *hash->link*)
+
+
+(defmethod common-doc.format:emit-document :around ((format markdown)
+                                                    node
+                                                    stream)
+  (let* ((toplevel (not (boundp '*link->hash*)))
+         (*link->hash* (if toplevel
+                           (make-hash-table :test 'equal)
+                           *link->hash*))
+         (*hash->link* (if toplevel
+                           (make-hash-table :test 'equal)
+                           *hash->link*)))
+    (call-next-method)
+
+    (when toplevel
+      (format stream "~2&")
+      (loop for hash being the hash-key of *hash->link*
+            using (hash-value link)
+            do (format stream "~&[~A]: ~A"
+                       hash link)))))
+
+
+(defun hash-link (url
+                  &key (min-n-chars *min-link-hash-length*))
+  (unless (boundp '*link->hash*)
+    (error "Function HASH-LINK should be called from COMMON-DOC.FORMAT:EMIT-DOCUMENT"))
+
+  (let ((found (gethash url *link->hash*)))
+    (when found
+      (return-from hash-link found)))
+  
+  (let ((hex (ironclad:byte-array-to-hex-string
+              (ironclad:digest-sequence 'ironclad:md5
+                                        (babel:string-to-octets url)))))
+    (loop for i upfrom min-n-chars below (length hex)
+          do (let ((hash (subseq hex 0 (min (length hex) i))))
+               (unless (gethash hash *hash->link*)
+                 (setf (gethash hash *hash->link*)
+                       url)
+                 (setf (gethash url *link->hash*)
+                       hash)
+                 (return-from hash-link hash))))
+    (assert nil () "MD5 collision collision detected.")))
+
+
 (defmethod common-doc.format:emit-document :before ((format markdown)
                                                     (node common-doc:document-node)
                                                     stream)
@@ -94,8 +145,10 @@
   (call-next-method)
   (write-char #\] stream)
 
-  (format stream "(~A)"
-          (common-doc:uri node)))
+  (format stream "[~A]"
+          (hash-link
+           (quri:render-uri
+            (common-doc:uri node)))))
 
 
 (defmethod common-doc.format:emit-document ((format markdown)
