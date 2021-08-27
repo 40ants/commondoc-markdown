@@ -98,7 +98,8 @@
                            *hash->link*)))
     (call-next-method)
 
-    (when toplevel
+    (when (and toplevel
+               (hash-table-count *hash->link*))
       (format stream "~2&")
       (loop for hash being the hash-key of *hash->link*
             using (hash-value link)
