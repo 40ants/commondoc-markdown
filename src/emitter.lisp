@@ -3,7 +3,8 @@
   (:import-from #:commondoc-markdown/core
                 #:markdown)
   (:export #:*emit-section-anchors*
-           #:*min-link-hash-length*))
+           #:*min-link-hash-length*
+           #:hash-link))
 (in-package commondoc-markdown/emitter)
 
 
@@ -101,8 +102,9 @@
     (when (and toplevel
                (hash-table-count *hash->link*))
       (format stream "~2&")
-      (loop for hash being the hash-key of *hash->link*
-            using (hash-value link)
+      (loop for (link . hash) in (sort (alexandria:hash-table-alist *link->hash*)
+                                       #'string<
+                                       :key #'first)
             do (format stream "~&[~A]: ~A"
                        hash link)))))
 
@@ -148,6 +150,7 @@
 
   (format stream "[~A]"
           (hash-link
+           
            (quri:render-uri
             (common-doc:uri node)))))
 
@@ -163,7 +166,7 @@
                      (common-doc:document-reference node)
                      (common-doc:node-reference node))))
     (format stream "(~A)"
-            uri)))
+            (hash-link uri))))
 
 
 (defmethod common-doc.format:emit-document ((format markdown)
