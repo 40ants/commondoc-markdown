@@ -12,3 +12,6 @@
                "commondoc-markdown/core"
                "commondoc-markdown/emitter")
   :in-order-to ((test-op (test-op commondoc-markdown-test))))
+
+
+(asdf:register-system-packages "common-html" '("COMMON-HTML.EMITTER"))
