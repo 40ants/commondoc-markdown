@@ -276,3 +276,12 @@
   (call-next-method)
   (write-char #\` stream))
 
+
+(defmethod common-doc.format:emit-document ((format markdown)
+                                            (node common-doc:image)
+                                            stream)
+  "Render a node to HTML stream."
+  (format stream "![~A](~A)"
+          (or (common-doc:description node)
+              "")
+          (common-doc:source node)))
