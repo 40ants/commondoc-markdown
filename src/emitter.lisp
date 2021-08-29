@@ -2,6 +2,7 @@
   (:use #:cl)
   (:import-from #:commondoc-markdown/core
                 #:markdown)
+  (:import-from #:str)
   (:export #:*emit-section-anchors*
            #:*min-link-hash-length*
            #:hash-link))
