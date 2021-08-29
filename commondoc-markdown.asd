@@ -15,3 +15,4 @@
 
 
 (asdf:register-system-packages "common-html" '("COMMON-HTML.EMITTER"))
+(asdf:register-system-packages "common-doc" '("COMMON-DOC.OPS"))

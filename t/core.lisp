@@ -11,9 +11,13 @@
                 #:make-content
                 #:make-section
                 #:make-text
-                #:make-paragraph)
+                #:make-paragraph
+                #:text
+                #:title)
   (:import-from #:commondoc-markdown
-                #:make-markdown-link))
+                #:make-markdown-link)
+  (:import-from #:common-doc.ops
+                #:collect-all-text))
 (in-package commondoc-markdown-test/core)
 
 
@@ -221,3 +225,61 @@ World"))
 
 [9bf8]: https://40ants.com"
            result)))))
+
+
+(deftest test-section-parsing
+  (testing "A single section"
+    (let ((doc (p "
+The Header
+==========
+
+Content, line 1.
+
+Second line.")))
+      (ok (typep doc 'common-doc:section))))
+  
+  (testing "Two sections on the same level"
+    (let ((doc (p "
+First Header
+============
+
+First paragraph.
+
+Second Header
+=============
+
+Second paragraph.
+")))
+      (ok (typep doc 'common-doc:content-node))
+      (let ((children (common-doc:children doc)))
+        (ok (typep (first children) 'common-doc:section))
+        (ok (string= (text (first (title (first children)))) "First Header"))
+        
+        (ok (typep (second children) 'common-doc:section))
+        (ok (string= (text (first (title (second children)))) "Second Header")))))
+
+  (testing "Two nested sections"
+    (let ((doc (p "
+First Header
+============
+
+First paragraph.
+
+Second Header
+-------------
+
+Second paragraph.
+")))
+      (ok (typep doc 'common-doc:section))
+      (let ((children (common-doc:children doc)))
+        (ok (typep (first children) 'common-doc:paragraph))
+        (ok (string= (collect-all-text (first children)) "First paragraph."))
+        
+        (let* ((inner-section (second children))
+               (children (common-doc:children inner-section)))
+          (ok (typep inner-section 'common-doc:section))
+          (ok (string= (text (first (title inner-section))) "Second Header"))
+
+          (ok (= (length children) 1))
+          (ok (typep (first children) 'common-doc:paragraph))
+          (ok (string= (collect-all-text (first children)) "Second paragraph.")))))))
