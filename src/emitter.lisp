@@ -2,7 +2,12 @@
   (:use #:cl)
   (:import-from #:commondoc-markdown/core
                 #:markdown)
+  (:import-from #:alexandria
+                #:hash-table-alist)
   (:import-from #:str)
+  (:import-from #:ironclad)
+  (:import-from #:babel)
+  (:import-from #:quri)
   (:export #:*emit-section-anchors*
            #:*min-link-hash-length*
            #:hash-link))
@@ -60,10 +65,7 @@
                   (common-doc:title node)
                   stream)
 
-    (call-next-method)
-    ;; (loop for child in (common-doc:children node)
-    ;;       do (common-doc.format:emit-document format child stream))
-    ))
+    (call-next-method)))
 
 
 (defmethod common-doc.format:emit-document ((format markdown)
@@ -103,7 +105,7 @@
     (when (and toplevel
                (hash-table-count *hash->link*))
       (format stream "~2&")
-      (loop for (link . hash) in (sort (alexandria:hash-table-alist *link->hash*)
+      (loop for (link . hash) in (sort (hash-table-alist *link->hash*)
                                        #'string<
                                        :key #'first)
             do (format stream "~&[~A]: ~A"
@@ -174,9 +176,7 @@
                                             (node common-doc:content-node)
                                             stream)
   (loop for child in (common-doc:children node)
-        do ;; (format stream "~A: "
-           ;;         child)
-           (common-doc.format:emit-document format child stream)))
+        do (common-doc.format:emit-document format child stream)))
 
 
 (defmethod common-doc.format:emit-document ((format markdown)
