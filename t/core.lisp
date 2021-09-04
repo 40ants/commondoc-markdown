@@ -233,10 +233,18 @@ World"))
 The Header
 ==========
 
-Content, line 1.
+Content, line one.
+
+- first item
+- second item
 
 Second line.")))
-      (ok (typep doc 'common-doc:section))))
+      (ok (typep doc 'common-doc:section))
+      (let ((children (common-doc:children doc)))
+        (ok (= (length children) 3))
+        (ok (typep (first children) 'common-doc:paragraph))
+        (ok (typep (second children) 'common-doc:unordered-list))
+        (ok (typep (third children) 'common-doc:paragraph)))))
   
   (testing "Two sections on the same level"
     (let ((doc (p "

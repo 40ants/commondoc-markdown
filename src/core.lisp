@@ -42,6 +42,13 @@
          (markdown-link-definition link-b)))
 
 
+(defvar *create-node-recursive-call* nil)
+
+(defmacro go-deeper (&body body)
+  `(let ((*create-node-recursive-call* t))
+     ,@body))
+
+
 (defun make-inline-nodes (pieces)
   "PIECES argument may contain a strings
    or lists like (:CODE \"foo\").
@@ -49,27 +56,28 @@
    Consecutive strings are concatenated into a
    text nodes, for lists a CREATE-NODE function
    is applied"
-  (let ((strings nil)
-        (results nil))
-    (labels ((collect-text-node-if-needed ()
-               (when strings
-                 (collect-node
-                  (common-doc:make-text
-                   (apply 'concatenate 'string
-                          (nreverse strings))))
-                 (setf strings nil)))
-             (collect-node (node)
-               (push node results)))
-      (loop for piece in pieces
-            do (typecase piece
-                 (string (push piece strings))
-                 (t
-                  (collect-text-node-if-needed)
-                  (collect-node
-                   (create-node piece))))
-            finally
-               (collect-text-node-if-needed)
-               (return (nreverse results))))))
+  (go-deeper
+    (let ((strings nil)
+          (results nil))
+      (labels ((collect-text-node-if-needed ()
+                 (when strings
+                   (collect-node
+                    (common-doc:make-text
+                     (apply 'concatenate 'string
+                            (nreverse strings))))
+                   (setf strings nil)))
+               (collect-node (node)
+                 (push node results)))
+        (loop for piece in pieces
+              do (typecase piece
+                   (string (push piece strings))
+                   (t
+                    (collect-text-node-if-needed)
+                    (collect-node
+                     (create-node piece))))
+              finally
+                 (collect-text-node-if-needed)
+                 (return (nreverse results)))))))
 
 
 ;; This var will be bound during with-collected-references macro body execution
@@ -176,16 +184,19 @@
                                             (common-doc:make-text code))))
              (:bullet-list
               (common-doc:make-unordered-list
-               (mapcar #'create-node
-                       content)))
+               (go-deeper
+                 (mapcar #'create-node
+                         content))))
              (:counted-list
               (common-doc:make-ordered-list
-               (mapcar #'create-node
-                       content)))
+               (go-deeper
+                 (mapcar #'create-node
+                         content))))
              (:list-item
               (common-doc:make-list-item
-               (mapcar #'create-node
-                       content)))
+               (go-deeper
+                 (mapcar #'create-node
+                         content))))
              (:heading
               (let* ((level (getf content :level))
                      (title-content (getf content :contents))
@@ -252,7 +263,8 @@
          ;; and return NIL because this node will be the part of the tree.
          ;; 
          ;; Otherwise, node should be returned as is.
-         (*sections-stack*
+         ((and *sections-stack*
+               (not *create-node-recursive-call*))
           (let* ((current-section (first *sections-stack*)))
             (setf (common-doc:children current-section)
                   (nconc (common-doc:children current-section)
