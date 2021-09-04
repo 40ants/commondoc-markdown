@@ -171,6 +171,11 @@
                     (label (getf content :label)))
                 (common-doc:make-web-link url
                                           (make-inline-nodes label))))
+             (:link
+              ;; Link in the form <https://40ants.com>
+              (let ((url (first content)))
+                (common-doc:make-web-link url
+                                          (common-doc:make-text url))))
              (:code
               (common-doc:make-code
                (make-inline-nodes content)))
