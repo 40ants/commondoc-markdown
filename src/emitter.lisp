@@ -168,7 +168,7 @@
   (let ((uri (format nil "~A#~A"
                      (common-doc:document-reference node)
                      (common-doc:node-reference node))))
-    (format stream "(~A)"
+    (format stream "[~A]"
             (hash-link uri))))
 
 
