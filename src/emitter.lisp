@@ -1,9 +1,11 @@
 (defpackage #:commondoc-markdown/emitter
   (:use #:cl)
   (:import-from #:commondoc-markdown/core
-                #:markdown)
+                #:markdown
+                #:line-break)
   (:import-from #:alexandria
                 #:hash-table-alist)
+  (:import-from #:common-html.emitter)
   (:import-from #:str)
   (:import-from #:ironclad)
   (:import-from #:babel)
@@ -35,7 +37,6 @@
 (defmethod common-doc.format:emit-document ((format markdown)
                                             (node common-doc:document)
                                             stream)
-  "Render a document to HTML stream."
   (let ((*header-level* (or (and (boundp '*header-level*)
                                  (1+ *header-level*))
                             1)))
@@ -50,7 +51,6 @@
 (defmethod common-doc.format:emit-document ((format markdown)
                                             (node common-doc:document-node)
                                             stream)
-  "Render a node to HTML stream."
   (format stream "Node of type ~S is not supported yet.~%"
           (type-of node)))
 
@@ -267,7 +267,32 @@
 ;;; Markup
 
 
-;; TODO: support bold, italic, underline, strikethrough, superscript and subscript
+;; TODO: support underline, strikethrough, superscript and subscript
+
+(defmethod common-doc.format:emit-document ((format markdown)
+                                            (node common-doc:bold)
+                                            stream)
+  (write-string "**" stream)
+  (call-next-method)
+  (write-string "**" stream))
+
+
+(defmethod common-doc.format:emit-document ((format markdown)
+                                            (node common-doc:italic)
+                                            stream)
+  (write-string "*" stream)
+  (call-next-method)
+  (write-string "*" stream))
+
+(defmethod common-doc.format:emit-document ((format markdown)
+                                            (node line-break)
+                                            stream)
+  (format stream "  ~%"))
+
+(common-html.emitter::define-emitter (line-break line-break)
+  (write-string "<br/>"
+                common-html.emitter::*output-stream*))
+
 
 (defmethod common-doc.format:emit-document ((format markdown)
                                             (node common-doc:code)
@@ -280,8 +305,21 @@
 (defmethod common-doc.format:emit-document ((format markdown)
                                             (node common-doc:image)
                                             stream)
-  "Render a node to HTML stream."
   (format stream "![~A](~A)"
           (or (common-doc:description node)
               "")
           (common-doc:source node)))
+
+
+(defmethod common-doc.format:emit-document ((format markdown)
+                                            (node common-doc:block-quote)
+                                            stream)
+  (let* ((content (with-output-to-string (s)
+                    (call-next-method format node s)))
+         (lines (str:split #\Newline content)))
+    
+    (format stream "~&")
+    (loop for line in lines
+          do (format stream "> ~A~%"
+                     line))
+    (format stream "~%")))

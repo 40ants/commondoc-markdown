@@ -30,6 +30,14 @@
                    defined somewhere in the markdown text."))
 
 
+(common-doc:define-node line-break (common-doc:markup)
+  ()
+  (:documentation "Explicit line break. In Markdown you have to add two or more spaces at the end of the line.
+
+                   When rendered to HTML, this node will be replaced with <br/>.
+                   When rendered back to markdown - with two spaces and a new-line."))
+
+
 (defun make-markdown-link (children &key definition)
   (make-instance 'markdown-link
                  :children (uiop:ensure-list children)
@@ -137,6 +145,8 @@
              ;; and :html nodes are created for a multiline html code
              (:html
               (make-raw-html-block (first content)))
+             (:line-break
+              (make-instance 'line-break))
              (:emph
               (common-doc:make-italic (make-inline-nodes content)))
              (:strong
@@ -152,6 +162,11 @@
              (:paragraph
               (common-doc:make-paragraph
                (make-inline-nodes content)))
+             (:block-quote
+              (common-doc:make-block-quote
+               (go-deeper
+                 (mapcar #'create-node
+                         content))))
              ;; We ignore references, because they are used
              ;; only for making weblinks
              (:reference
@@ -269,6 +284,10 @@
          ;; 
          ;; Otherwise, node should be returned as is.
          ((and *sections-stack*
+               ;; When node is a reference which shouldn't be rendered:
+               ;; [SomeRef]: https://40ants.com
+               ;; it will be NIL and we don't need to add it to the children.
+               node
                (not *create-node-recursive-call*))
           (let* ((current-section (first *sections-stack*)))
             (setf (common-doc:children current-section)

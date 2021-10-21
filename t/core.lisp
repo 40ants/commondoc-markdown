@@ -290,4 +290,37 @@ Second paragraph.
 
           (ok (= (length children) 1))
           (ok (typep (first children) 'common-doc:paragraph))
-          (ok (string= (collect-all-text (first children)) "Second paragraph.")))))))
+          (ok (string= (collect-all-text (first children)) "Second paragraph."))))))
+
+  (testing "References should not be presented as NIL children"
+    (let ((doc (p "
+The Header
+==========
+
+Content.
+
+[TheRef]: https://40ants.com
+")))
+      (ok (typep doc 'common-doc:section))
+      (let ((children (common-doc:children doc)))
+        (ok (= (length children) 1))
+        (ok (typep (first children) 'common-doc:paragraph))))))
+
+
+(deftest line-breaks
+  (testing "Rendering back to Markdown and HTML"
+    (let* ((doc (p "
+This is  
+the breaked line.
+"))
+           (html (rr doc))
+           (markdown (mm doc)))
+
+      (ok (equal markdown
+                 "This is  
+the breaked line.
+
+
+"))
+      (ok (equal html
+                 "<p>This is<br/>the breaked line.</p>")))))
