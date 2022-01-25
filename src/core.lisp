@@ -236,7 +236,11 @@
                      (url (getf options :source))
                      (desc (getf options :title)))
                 (common-doc:make-image url
-                                       :description desc))))))
+                                       :description desc)))
+             (:entity
+              (let* ((entity (car content))
+                     (plain-text (plump:decode-entities entity)))
+                (common-doc:make-text plain-text))))))
     (typecase node
       (common-doc:section
        (cond
