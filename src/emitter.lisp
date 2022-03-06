@@ -1,4 +1,4 @@
-(defpackage #:commondoc-markdown/emitter
+(uiop:define-package #:commondoc-markdown/emitter
   (:use #:cl)
   (:import-from #:commondoc-markdown/core
                 #:markdown
@@ -12,13 +12,20 @@
   (:import-from #:quri)
   (:export #:*emit-section-anchors*
            #:*min-link-hash-length*
-           #:hash-link))
-(in-package commondoc-markdown/emitter)
+           #:*generate-short-link-references*))
+(in-package #:commondoc-markdown/emitter)
 
 
 (defvar *header-level*)
 
-(defvar *emit-section-anchors* t)
+(defvar *emit-section-anchors* t
+  "When this variable is `T` (default), emitter outputs
+   a raw html `<a name=\"some-id\"></a>` before each
+   Markdown section.")
+
+(defvar *generate-short-link-references* t
+  "By default it is `T`, but you can bind it to NIL,
+   to prevent short link references generation.")
 
 
 (defun write-header-prefix (stream)
@@ -84,7 +91,9 @@
 ;; Links
 
 (defvar *min-link-hash-length* 4
-  "Minumum length of the hash for generated markdown links.")
+  "Minumum length of the hash for generated markdown links.
+   This works only when *GENERATE-SHORT-LINK-REFERENCES* variable
+   is set to `T`.")
 
 (defvar *link->hash*)
 (defvar *hash->link*)
@@ -151,11 +160,13 @@
   (call-next-method)
   (write-char #\] stream)
 
-  (format stream "[~A]"
-          (hash-link
-           
-           (quri:render-uri
-            (common-doc:uri node)))))
+  (let ((url (quri:render-uri
+              (common-doc:uri node))))
+    (if *generate-short-link-references*
+        (format stream "[~A]"
+                (hash-link url))
+        (format stream "(~A)"
+                url))))
 
 
 (defmethod common-doc.format:emit-document ((format markdown)
@@ -168,8 +179,11 @@
   (let ((uri (format nil "~A#~A"
                      (common-doc:document-reference node)
                      (common-doc:node-reference node))))
-    (format stream "[~A]"
-            (hash-link uri))))
+    (if *generate-short-link-references*
+        (format stream "[~A]"
+                (hash-link uri))
+        (format stream "(~A)"
+                uri))))
 
 
 (defmethod common-doc.format:emit-document ((format markdown)

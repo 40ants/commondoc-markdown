@@ -40,6 +40,7 @@ It is a proof of the concept, but I'm already using it in the documentation buil
   (@installation section)
   (@parsing section)
   (@formatting section)
+  (@api section)
   (@roadmap section))
 
 
@@ -100,4 +101,10 @@ CL-USER> (common-doc.format:emit-to-string
 * Make commondoc-markdown compatible with [CommonMark](https://commonmark.org/) syntax.
 
 """)
+
+
+(defsection @api (:title "API")
+  (commondoc-markdown/emitter:*generate-short-link-references* variable)
+  (commondoc-markdown/emitter:*min-link-hash-length* variable)
+  (commondoc-markdown/emitter:*emit-section-anchors* variable))
 

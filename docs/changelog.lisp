@@ -11,7 +11,12 @@
 (in-readtable pythonic-string-syntax)
 
 
-(defchangelog ()
+(defchangelog (:ignore-words ("HASH-LINK"))
+  (0.2.0 2022-03-07
+         "* Variable COMMONDOC-MARKDOWN/EMITTER:*GENERATE-SHORT-LINK-REFERENCES*
+            was introduced. By default it is `T`, but you can bind it to NIL,
+            to prevent short link references generation.
+          * HASH-LINK function now is not exported from emitter package.")
   (0.1.0 2022-01-25
          """
 Initial version with minimal docs.
