@@ -5,6 +5,7 @@
                 #:defsection)
   (:import-from #:named-readtables
                 #:in-readtable)
+  (:import-from #:commondoc-markdown/emitter)
   (:import-from #:pythonic-string-reader
                 #:pythonic-string-syntax)
   (:export
