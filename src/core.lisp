@@ -2,6 +2,7 @@
   (:use #:cl)
   (:nicknames #:commondoc-markdown/core)
   (:import-from #:3bmd)
+  (:import-from #:3bmd-code-blocks)
   (:import-from #:common-doc
                 #:get-meta
                 #:make-meta)
