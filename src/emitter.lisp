@@ -111,8 +111,11 @@
                            *hash->link*)))
     (call-next-method)
 
+    ;; We only need to output hashes and links when there
+    ;; is something to output:
     (when (and toplevel
-               (hash-table-count *hash->link*))
+               (> (hash-table-count *hash->link*)
+                  0))
       (format stream "~2&")
       (loop for (link . hash) in (sort (hash-table-alist *link->hash*)
                                        #'string<
