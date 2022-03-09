@@ -1,5 +1,6 @@
 (uiop:define-package #:commondoc-markdown/addons
   (:use #:cl)
+  (:import-from #:3bmd)
   (:import-from #:esrap
                 #:defrule
                 #:!))
