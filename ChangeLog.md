@@ -12,6 +12,16 @@
 
 * `HASH-LINK` function now is not exported from emitter package.
 
+<a id="x-28COMMONDOC-MARKDOWN-DOCS-2FCHANGELOG-3A-3A-7C0-2E2-2E0-7C-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29"></a>
+
+## 0.2.0 (2022-03-07)
+
+* Variable [`commondoc-markdown/emitter:*generate-short-link-references*`][651c]
+  was introduced. By default it is `T`, but you can bind it to `NIL`,
+  to prevent short link references generation.
+
+* `HASH-LINK` function now is not exported from emitter package.
+
 <a id="x-28COMMONDOC-MARKDOWN-DOCS-2FCHANGELOG-3A-3A-7C0-2E1-2E0-7C-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29"></a>
 
 ## 0.1.0 (2022-01-25)
