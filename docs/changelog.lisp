@@ -13,7 +13,7 @@
 
 (defchangelog (:ignore-words ("HASH-LINK"
                               "COMMON-DOC:STRIKETHROUGH"))
-  (0.2.0 2022-03-10
+  (0.3.0 2022-03-10
          "* Parser was extended to produce a COMMON-DOC:STRIKETHROUGH objects
             when you enter `--text surrounded by two minus signs--`.")
   (0.2.0 2022-03-07
