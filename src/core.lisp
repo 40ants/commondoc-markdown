@@ -1,6 +1,7 @@
 (defpackage #:commondoc-markdown
   (:use #:cl)
   (:nicknames #:commondoc-markdown/core)
+  (:import-from #:commondoc-markdown/addons)
   (:import-from #:3bmd)
   (:import-from #:3bmd-code-blocks)
   (:import-from #:common-doc
@@ -152,6 +153,8 @@
               (common-doc:make-italic (make-inline-nodes content)))
              (:strong
               (common-doc:make-bold (make-inline-nodes content)))
+             (:strikethrough
+              (common-doc:make-strikethrough (make-inline-nodes content)))
              (:plain
               ;; Not sure if it is a good idea to
               ;; make :PLAIN a paragraph,
@@ -304,7 +307,8 @@
 
 (defun parse-markdown (string)
   "This is just a helper to reuse in tests"
-  (let ((3bmd-code-blocks:*code-blocks* t))
+  (let ((3bmd-code-blocks:*code-blocks* t)
+        (commondoc-markdown/addons::*strikethrough* t))
     (3bmd-grammar:parse-doc string)))
 
 

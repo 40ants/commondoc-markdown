@@ -11,7 +11,11 @@
 (in-readtable pythonic-string-syntax)
 
 
-(defchangelog (:ignore-words ("HASH-LINK"))
+(defchangelog (:ignore-words ("HASH-LINK"
+                              "COMMON-DOC:STRIKETHROUGH"))
+  (0.2.0 2022-03-10
+         "* Parser was extended to produce a COMMON-DOC:STRIKETHROUGH objects
+            when you enter `--text surrounded by two minus signs--`.")
   (0.2.0 2022-03-07
          "* Variable COMMONDOC-MARKDOWN/EMITTER:*GENERATE-SHORT-LINK-REFERENCES*
             was introduced. By default it is `T`, but you can bind it to NIL,
