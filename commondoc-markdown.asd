@@ -7,7 +7,8 @@
   :description "Converter from Markdown to CommonDoc."
   :class :package-inferred-system
   :pathname "src"
-  :depends-on ("3bmd"
+  :depends-on ("uiop"
+               "3bmd"
                "3bmd-ext-code-blocks"
                "commondoc-markdown/core"
                "commondoc-markdown/emitter")
