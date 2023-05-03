@@ -320,7 +320,6 @@ the breaked line.
                  "This is  
 the breaked line.
 
-
 "))
       (ok (equal html
                  "<p>This is<br/>the breaked line.</p>")))))
