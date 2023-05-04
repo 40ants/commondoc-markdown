@@ -1,10 +1,20 @@
 {
-  "name": "LINTER",
+  "name": "CI",
   "on": {
-    "pull_request": null
+    "push": {
+      "branches": [
+        "master"
+      ]
+    },
+    "pull_request": null,
+    "schedule": [
+      {
+        "cron": "0 10 * * 1"
+      }
+    ]
   },
   "jobs": {
-    "linter": {
+    "run-tests": {
       "runs-on": "ubuntu-latest",
       "env": {
         "OS": "ubuntu-latest",
@@ -51,24 +61,12 @@
           "if": "steps.cache.outputs.cache-hit != 'true'"
         },
         {
-          "name": "Change dist to Ultralisp if qlfile does not exist",
-          "run": "if [[ ! -e qlfile ]]; then echo 'dist ultralisp http://dist.ultralisp.org' > qlfile; fi",
-          "shell": "bash"
-        },
-        {
-          "name": "Update Qlot",
-          "run": "qlot update --no-deps",
-          "shell": "bash"
-        },
-        {
-          "name": "Install SBLint wrapper",
-          "run": "qlot exec ros install 40ants-asdf-system 40ants-linter",
-          "shell": "bash"
-        },
-        {
-          "name": "Run Linter",
-          "run": "qlot exec 40ants-linter --system \"commondoc-markdown\"",
-          "shell": "bash"
+          "name": "Run Tests",
+          "uses": "40ants/run-tests@v2",
+          "with": {
+            "asdf-system": "commondoc-markdown",
+            "coveralls-token": "${{ secrets.github_token }}"
+          }
         }
       ]
     }
