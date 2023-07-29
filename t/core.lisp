@@ -11,6 +11,8 @@
                 #:make-content
                 #:make-section
                 #:make-text
+                #:make-list-item
+                #:make-ordered-list
                 #:make-paragraph
                 #:text
                 #:title)
@@ -88,6 +90,34 @@ in the second.
 in first paragraph."))
                                  (make-paragraph (make-text "And some words
 in the second.")))))))
+
+
+(deftest test-bullet-parsing
+  (testing "Parsing a bullet list"
+    (compare (p "- test 1
+- test 2
+- test 3
+
+")
+             (make-unordered-list
+              (list
+               (make-list-item
+                (make-paragraph
+                 (make-text "test 1")))
+               (make-list-item
+                (make-paragraph
+                 (make-text "test 2")))
+               (make-list-item
+                (make-paragraph
+                 (make-text "test 3")))))))
+
+  (testing "Round tripping a bullet list"
+    (let ((md-string "* test 1
+* test 2
+* test 3
+
+"))
+      (ok (string-equal (mm (p md-string)) md-string)))))
 
 
 (deftest test-inline-code
