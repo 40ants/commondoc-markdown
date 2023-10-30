@@ -12,6 +12,8 @@
   (:import-from #:commondoc-markdown/raw-html
                 #:make-raw-html-block
                 #:make-raw-inline-html)
+  (:import-from #:commondoc-markdown/utils
+                #:parse-tree-to-text)
   (:export
    #:markdown
    #:make-markdown-link
@@ -179,12 +181,16 @@
               (let* ((label (getf content :label))
                      (label-nodes (make-inline-nodes label))
                      (definition (getf content :definition))
-                     (url (find-url definition)))
+                     ;; After https://github.com/3b/3bmd/issues/55 we might
+                     ;; get a list as link definition.
+                     (definition-as-a-text (parse-tree-to-text
+                                            (getf content :definition)))
+                     (url (find-url definition-as-a-text)))
                 (if url
                     (common-doc:make-web-link url
                                               label-nodes)
                     (make-markdown-link label-nodes
-                                        :definition definition))))
+                                        :definition definition-as-a-text))))
              (:explicit-link
               (let ((url (getf content :source))
                     (label (getf content :label)))
