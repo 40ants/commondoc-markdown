@@ -2,6 +2,13 @@
 
 # ChangeLog
 
+<a id="x-28COMMONDOC-MARKDOWN-DOCS-2FCHANGELOG-3A-3A-7C0-2E4-2E0-7C-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29"></a>
+
+## 0.4.0 (2023-10-30)
+
+* Fixed work with latest 3bmd Markdown parser.
+* Fixed the way how bullet lists are rendered into Markdown. Now there is no blank lines between list items.
+
 <a id="x-28COMMONDOC-MARKDOWN-DOCS-2FCHANGELOG-3A-3A-7C0-2E3-2E0-7C-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29"></a>
 
 ## 0.3.0 (2022-03-10)
@@ -16,7 +23,6 @@ when you enter `--text surrounded by two minus signs--`.
 * Variable [`commondoc-markdown/emitter:*generate-short-link-references*`][651c]
   was introduced. By default it is `T`, but you can bind it to `NIL`,
   to prevent short link references generation.
-
 * `HASH-LINK` function now is not exported from emitter package.
 
 <a id="x-28COMMONDOC-MARKDOWN-DOCS-2FCHANGELOG-3A-3A-7C0-2E1-2E0-7C-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29"></a>
