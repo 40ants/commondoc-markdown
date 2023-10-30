@@ -88,7 +88,6 @@ CL-USER> (common-doc.format:emit-to-string
 "# Hello World
 
 * First item
-
 * Second item
 
 
