@@ -13,6 +13,9 @@
 
 (defchangelog (:ignore-words ("HASH-LINK"
                               "COMMON-DOC:STRIKETHROUGH"))
+  (0.4.0 2023-10-30
+         "* Fixed work with latest 3bmd Markdown parser.
+          * Fixed the way how bullet lists are rendered into Markdown. Now there is no blank lines between list items.")
   (0.3.0 2022-03-10
          "* Parser was extended to produce a COMMON-DOC:STRIKETHROUGH objects
             when you enter `--text surrounded by two minus signs--`.")
