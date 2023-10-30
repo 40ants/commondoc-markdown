@@ -183,8 +183,7 @@
                      (definition (getf content :definition))
                      ;; After https://github.com/3b/3bmd/issues/55 we might
                      ;; get a list as link definition.
-                     (definition-as-a-text (parse-tree-to-text
-                                            (getf content :definition)))
+                     (definition-as-a-text (parse-tree-to-text definition))
                      (url (find-url definition-as-a-text)))
                 (if url
                     (common-doc:make-web-link url
