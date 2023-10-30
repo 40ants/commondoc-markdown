@@ -17,6 +17,7 @@
 
 
 (defvar *header-level*)
+(defvar *inhibit-paragraph-breaks* nil)
 
 (defvar *emit-section-anchors* t
   "When this variable is `T` (default), emitter outputs
@@ -200,7 +201,9 @@
                                             (node common-doc:paragraph)
                                             stream)
   (call-next-method)
-  (format stream "~2&"))
+  (if *inhibit-paragraph-breaks*
+      (format stream "~1&")
+      (format stream "~2&")))
 
 
 (defun get-line-backticks-count (line)
@@ -265,9 +268,10 @@
   
   (loop for item in (common-doc:children node)
         do (write-string "* " stream)
-           (common-doc.format:emit-document format item stream))
+           (let ((*inhibit-paragraph-breaks* t))
+             (common-doc.format:emit-document format item stream)))
 
-  (fresh-line stream))
+  (format stream "~%"))
 
 
 (defmethod common-doc.format:emit-document ((format markdown)
@@ -277,9 +281,10 @@
   (loop for item in (common-doc:children node)
         for idx upfrom 1
         do (format stream "~A. " idx)
-           (common-doc.format:emit-document format item stream))
+           (let ((*inhibit-paragraph-breaks* t))
+             (common-doc.format:emit-document format item stream)))
 
-  (fresh-line stream))
+  (format stream "~%"))
 
 ;;; Markup
 
