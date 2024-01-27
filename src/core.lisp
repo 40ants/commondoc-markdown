@@ -4,6 +4,7 @@
   (:import-from #:commondoc-markdown/addons)
   (:import-from #:3bmd)
   (:import-from #:3bmd-code-blocks)
+  (:import-from #:3bmd-tables)
   (:import-from #:common-doc
                 #:get-meta
                 #:make-meta)
@@ -211,6 +212,34 @@
                      (code (getf content :content)))
                 (common-doc:make-code-block lang
                                             (common-doc:make-text code))))
+             ;; Start tables support
+             (3bmd::table
+              (common-doc:make-table
+               (go-deeper
+                 (append (loop for row in (getf content :head)
+                               collect (common-doc:make-row
+                                        (mapcar #'create-node
+                                                row
+                                                ;; (remove-if #'null row)
+                                                )))
+                         (loop for row in (getf content :body)
+                               collect (common-doc:make-row
+                                        (mapcar #'create-node
+                                                row
+                                                ;; (remove-if #'null row)
+                                                )))))))
+             (3bmd-grammar::th
+              (common-doc:make-cell
+               (mapcar #'create-node
+                       (remove-if #'null content))))
+             (3bmd-grammar::td
+              (common-doc:make-cell
+               (mapcar #'create-node
+                       (remove-if #'null content))))
+
+             (:horizontal-rule
+              (make-raw-inline-html "<hr/>"))
+             ;; End tables support
              (:bullet-list
               (common-doc:make-unordered-list
                (go-deeper
@@ -313,6 +342,7 @@
 (defun parse-markdown (string)
   "This is just a helper to reuse in tests"
   (let ((3bmd-code-blocks:*code-blocks* t)
+        (3bmd-tables:*tables* t)
         (commondoc-markdown/addons::*strikethrough* t))
     (3bmd-grammar:parse-doc string)))
 

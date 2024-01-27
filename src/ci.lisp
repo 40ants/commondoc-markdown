@@ -4,14 +4,21 @@
                 #:defworkflow)
   (:import-from #:40ants-ci/jobs/linter)
   (:import-from #:40ants-ci/jobs/run-tests)
-  (:import-from #:40ants-ci/jobs/docs))
+  (:import-from #:40ants-ci/jobs/docs)
+  (:import-from #:40ants-ci/jobs/autotag
+                #:autotag))
 (in-package #:commondoc-markdown/ci)
 
+
+(defworkflow release
+  :on-push-to "master"
+  :jobs ((autotag)))
 
 (defworkflow linter
   :on-pull-request t
   :cache t
-  :jobs ((40ants-ci/jobs/linter:linter)))
+  :jobs ((40ants-ci/jobs/linter:linter
+          :check-imports t)))
 
 (defworkflow ci
   :on-push-to "master"

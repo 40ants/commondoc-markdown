@@ -18,3 +18,4 @@
 (asdf:register-system-packages "common-html" '("COMMON-HTML.EMITTER"))
 (asdf:register-system-packages "common-doc" '("COMMON-DOC.OPS"))
 (asdf:register-system-packages "3bmd-ext-code-blocks" '("3BMD-CODE-BLOCKS"))
+(asdf:register-system-packages "3bmd-ext-tables" '("3BMD-TABLES"))
