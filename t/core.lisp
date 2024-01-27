@@ -206,7 +206,8 @@ World"))
     (compare (p "A text with [a link][].")
              (make-paragraph (list
                               (make-text "A text with ")
-                              (make-markdown-link (make-text "a link"))
+                              (make-markdown-link (make-text "a link")
+                                                  :definition "")
                               (make-text ".")))))
 
   (testing "Link with not defined definition"
