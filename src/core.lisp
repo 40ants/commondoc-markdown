@@ -24,7 +24,7 @@
    #:make-markdown-link
    #:markdown-link
    #:markdown-link-definition))
-(in-package commondoc-markdown)
+(in-package #:commondoc-markdown)
 
 
 (common-doc:define-node markdown-link (common-doc:link)

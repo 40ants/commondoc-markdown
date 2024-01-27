@@ -12,7 +12,7 @@
    #:make-raw-html-block
    #:html
    #:make-raw-inline-html))
-(in-package commondoc-markdown/raw-html)
+(in-package #:commondoc-markdown/raw-html)
 
 
 (defclass raw-html (common-doc:document-node)

@@ -5,6 +5,7 @@
                 #:testing
                 #:deftest)
   (:import-from #:common-doc
+                #:make-unordered-list
                 #:make-web-link
                 #:make-code-block
                 #:make-code
@@ -20,7 +21,7 @@
                 #:make-markdown-link)
   (:import-from #:common-doc.ops
                 #:collect-all-text))
-(in-package commondoc-markdown-test/core)
+(in-package #:commondoc-markdown-test/core)
 
 
 (defun p (text)
