@@ -6,6 +6,7 @@
   (:import-from #:alexandria
                 #:hash-table-alist)
   (:import-from #:common-html.emitter)
+  (:import-from #:common-doc.format)
   (:import-from #:str)
   (:import-from #:ironclad)
   (:import-from #:babel)
@@ -345,3 +346,49 @@
           do (format stream "> ~A~%"
                      line))
     (format stream "~%")))
+
+
+(defmethod common-doc.format:emit-document ((format markdown)
+                                            (node common-doc:cell)
+                                            stream)
+
+  (let ((content (common-doc:children node)))
+    (flet ((emit-only-children (node)
+             (loop for child in (common-doc:children node)
+                   do (common-doc.format:emit-document format child stream))))
+    
+      (loop for item in content
+            do (typecase item
+                 (common-doc:paragraph
+                  ;; When rendering a cell content, we need to avoid
+                  ;; paragraphs rendering, because they will insert newlines
+                  ;; and break our Markdown markup :(
+                  (emit-only-children item))
+                 (t
+                  (common-doc.format:emit-document format item stream)))))))
+
+
+(defmethod common-doc.format:emit-document ((format markdown)
+                                            (node common-doc:table)
+                                            stream)
+  (let* ((rows (common-doc:rows node))
+         (header (first rows))
+         (content (rest rows)))
+    (flet ((write-row (row)
+             (loop for cell in (common-doc:cells row)
+                   do (format stream "| ")
+                      (common-doc.format:emit-document format cell stream)
+                      (format stream " "))
+             (format stream "|~%")))
+      
+      (when header
+        (write-row header)
+        (format stream "| ~{~A~^ | ~} |~%"
+                (loop repeat (length (common-doc:cells header))
+                      collect "---")))
+      
+      (when content
+        (loop for row in content
+              do (write-row row)))))
+  
+  (format stream "~%"))

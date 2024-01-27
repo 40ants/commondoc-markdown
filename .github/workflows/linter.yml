@@ -44,7 +44,7 @@
         },
         {
           "name": "Setup Common Lisp Environment",
-          "uses": "40ants/setup-lisp@v2",
+          "uses": "40ants/setup-lisp@v3",
           "with": {
             "asdf-system": "commondoc-markdown"
           },
@@ -67,7 +67,7 @@
         },
         {
           "name": "Run Linter",
-          "run": "qlot exec 40ants-linter --system \"commondoc-markdown\"",
+          "run": "qlot exec 40ants-linter --system \"commondoc-markdown\" --imports",
           "shell": "bash"
         }
       ]

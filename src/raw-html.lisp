@@ -1,6 +1,7 @@
 (uiop:define-package #:commondoc-markdown/raw-html
   (:use #:cl)
   (:import-from #:common-doc)
+  (:import-from #:common-doc.format)
   (:import-from #:commondoc-markdown/format
                 #:markdown)
   (:import-from #:common-html.emitter)
@@ -11,7 +12,7 @@
    #:make-raw-html-block
    #:html
    #:make-raw-inline-html))
-(in-package commondoc-markdown/raw-html)
+(in-package #:commondoc-markdown/raw-html)
 
 
 (defclass raw-html (common-doc:document-node)

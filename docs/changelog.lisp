@@ -13,6 +13,8 @@
 
 (defchangelog (:ignore-words ("HASH-LINK"
                               "COMMON-DOC:STRIKETHROUGH"))
+  (0.5.0 2024-01-27
+         "* Added support for basic tables syntax. Table headers aren't supported yet, because common-doc system does not support them :(")
   (0.4.0 2023-10-30
          "* Fixed work with latest 3bmd Markdown parser.
           * Fixed the way how bullet lists are rendered into Markdown. Now there is no blank lines between list items.")
