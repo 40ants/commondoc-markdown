@@ -2,6 +2,12 @@
 
 # ChangeLog
 
+<a id="x-28COMMONDOC-MARKDOWN-DOCS-2FCHANGELOG-3A-3A-7C0-2E5-2E0-7C-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29"></a>
+
+## 0.5.0 (2024-01-27)
+
+* Added support for basic tables syntax. Table headers aren't supported yet, because common-doc system does not support them :(
+
 <a id="x-28COMMONDOC-MARKDOWN-DOCS-2FCHANGELOG-3A-3A-7C0-2E4-2E0-7C-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29"></a>
 
 ## 0.4.0 (2023-10-30)
