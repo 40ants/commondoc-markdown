@@ -3,11 +3,15 @@
   (:nicknames #:commondoc-markdown/core)
   (:import-from #:commondoc-markdown/addons)
   (:import-from #:3bmd)
+  (:import-from #:3bmd-grammar)
   (:import-from #:3bmd-code-blocks)
   (:import-from #:3bmd-tables)
   (:import-from #:common-doc
                 #:get-meta
                 #:make-meta)
+  (:import-from #:common-doc.format)
+  (:import-from #:common-doc.ops)
+  (:import-from #:plump)
   (:import-from #:commondoc-markdown/format
                 #:markdown)
   (:import-from #:commondoc-markdown/raw-html

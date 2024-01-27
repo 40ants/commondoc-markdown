@@ -6,6 +6,7 @@
   (:import-from #:alexandria
                 #:hash-table-alist)
   (:import-from #:common-html.emitter)
+  (:import-from #:common-doc.format)
   (:import-from #:str)
   (:import-from #:ironclad)
   (:import-from #:babel)

@@ -1,6 +1,7 @@
 (uiop:define-package #:commondoc-markdown/raw-html
   (:use #:cl)
   (:import-from #:common-doc)
+  (:import-from #:common-doc.format)
   (:import-from #:commondoc-markdown/format
                 #:markdown)
   (:import-from #:common-html.emitter)

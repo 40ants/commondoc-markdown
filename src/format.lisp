@@ -1,7 +1,7 @@
 (defpackage #:commondoc-markdown/format
   (:use #:cl)
-  (:export
-   #:markdown))
+  (:import-from #:common-doc.format)
+  (:export #:markdown))
 (in-package commondoc-markdown/format)
 
 
