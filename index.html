@@ -1,0 +1,140 @@
+<html lang=en>
+ <head>
+  <meta charset=UTF-8><meta name=viewport
+      content="width=device-width, initial-scale=1">
+  <title>CommonDoc-Markdown</title>
+  <link rel=alternate
+        href=https://40ants.com/commondoc-markdown/changelog.xml
+        type=application/rss+xml>
+  <link rel=stylesheet type=text/css
+        href=theme.css>
+  <script type=text/javascript src=jquery.js></script>
+  <script type=text/javascript src=toc.js></script>
+  <link rel=stylesheet type=text/css
+        href=highlight.min.css>
+  <script type=text/javascript src=highlight.min.js></script>
+  <script type=text/javascript>hljs.highlightAll();</script>
+  <script type=text/javascript>
+             MathJax = {
+               tex: {
+                 inlineMath: [['$','$']],
+                 processEscapes: true
+               }
+             };
+        </script>
+  <script type=text/javascript
+          src=https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js></script>
+  <script type=text/javascript>$(document).ready(function() {$('a:has(img)').css('border-bottom', 'none')})</script>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-FL71WXK73K"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-FL71WXK73K');
+    </script>
+
+    <!-- Yandex.Metrika counter -->
+    <script type="text/javascript" >
+       (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+       m[i].l=1*new Date();
+       for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
+       k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+       (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+       ym(42462884, "init", {
+            clickmap:true,
+            trackLinks:true,
+            accurateTrackBounce:true
+       });
+    </script>
+    <noscript><div><img src="https://mc.yandex.ru/watch/42462884" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
+
+ </head>
+ <body>
+  <div class=page><a id=fork-me href=https://github.com/40ants/commondoc-markdown>Fork me on GitHub</a>
+   <div class=navbar>
+    <div class=navbar-inner>
+     <a class=brand href="/">
+      <img class=logo
+           src=https://40ants.com/img/logo.svg></a>
+     <ul class=nav>
+      <li><a href=/about.html>Who We Are</a>
+      <li><a href=https://gitter.im/40ants/team>Chat With Us</a>
+      <li><a href=/tips.html>Lisp Tips</a>
+      <li><a href=/projects.html>Our Projects</a>
+     </ul>
+    </div>
+   </div>
+   <input type=checkbox id=sidebar-check>
+   <label for=sidebar-check>
+    <div id=sidebar-trigger>
+     <span></span><span></span><span></span>
+    </div></label><div class=sidebar><div class=header><form class=search method=GET action="search/">
+      <input type=text name=q>
+      <input type=submit value=Search><span id=search-progress></span>
+     </form>
+    </div><div class=content><div class=page-toc><ul><li><p><a href="#x-28COMMONDOC-MARKDOWN-DOCS-2FINDEX-3A-40INDEX-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29" data-document="" data-node="x-28COMMONDOC-MARKDOWN-DOCS-2FINDEX-3A-40INDEX-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29">CommonDoc-Markdown</a></p><ul><li><p><a href="#x-28COMMONDOC-MARKDOWN-DOCS-2FINDEX-3A-3A-40INSTALLATION-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29" data-document="" data-node="x-28COMMONDOC-MARKDOWN-DOCS-2FINDEX-3A-3A-40INSTALLATION-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29">Installation</a></p></li><li><p><a href="#x-28COMMONDOC-MARKDOWN-DOCS-2FINDEX-3A-3A-40PARSING-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29" data-document="" data-node="x-28COMMONDOC-MARKDOWN-DOCS-2FINDEX-3A-3A-40PARSING-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29">Parsing Markdown to CommonDoc</a></p></li><li><p><a href="#x-28COMMONDOC-MARKDOWN-DOCS-2FINDEX-3A-3A-40FORMATTING-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29" data-document="" data-node="x-28COMMONDOC-MARKDOWN-DOCS-2FINDEX-3A-3A-40FORMATTING-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29">Writing CommonDoc to Markdown</a></p></li><li><p><a href="#x-28COMMONDOC-MARKDOWN-DOCS-2FINDEX-3A-3A-40API-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29" data-document="" data-node="x-28COMMONDOC-MARKDOWN-DOCS-2FINDEX-3A-3A-40API-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29">API</a></p></li><li><p><a href="#x-28COMMONDOC-MARKDOWN-DOCS-2FINDEX-3A-3A-40ROADMAP-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29" data-document="" data-node="x-28COMMONDOC-MARKDOWN-DOCS-2FINDEX-3A-3A-40ROADMAP-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29">Roadmap</a></p></li></ul></li><li><p><a href="changelog/#x-28COMMONDOC-MARKDOWN-DOCS-2FCHANGELOG-3A-40CHANGELOG-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29" data-document="changelog/" data-node="x-28COMMONDOC-MARKDOWN-DOCS-2FCHANGELOG-3A-40CHANGELOG-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29">ChangeLog</a></p></li></ul>
+     </div>
+    </div><div class=footer>
+     <a href=https://40ants.com/doc>[generated by 40ANTS-DOC]</a>
+    </div>
+   </div><div class=content role=main><h1>CommonDoc-Markdown<a class=header-link
+     href=#x-28COMMONDOC-MARKDOWN-DOCS-2FINDEX-3A-40INDEX-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29
+     title="Permalink to this headline"
+     id=x-28COMMONDOC-MARKDOWN-DOCS-2FINDEX-3A-40INDEX-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29></a></h1><p>This is a wrapper around <a href="https://github.com/3b/3bmd">3BMD</a> markdown parser which produces
+documents in <a href="http://commondoc.github.io/">CommonDoc</a> format. Also, it is able to render
+CommonDoc documents into the Markdown.</p><p>It is a proof of the concept, but I'm already using it in the documentation builder
+<a href="https://40ants.com/doc/">40ANTS-DOC</a>.</p><blockquote><p><b>Note</b>. This library is not compatible with <a href="https://commonmark.org/">CommonMark</a> yet.</p></blockquote><h2>Installation<a class=header-link
+     href=#x-28COMMONDOC-MARKDOWN-DOCS-2FINDEX-3A-3A-40INSTALLATION-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29
+     title="Permalink to this headline"
+     id=x-28COMMONDOC-MARKDOWN-DOCS-2FINDEX-3A-3A-40INSTALLATION-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29></a></h2><p>This library available only at Ultralisp.org now. To install it using Quicklisp client, do:</p><pre><code class="lisp">(ql-dist:install-dist &quot;http://dist.ultralisp.org/&quot;
+                      :prompt nil)
+
+(ql:quickload :commondoc-markdown)</code></pre><h2>Parsing Markdown to CommonDoc<a class=header-link
+     href=#x-28COMMONDOC-MARKDOWN-DOCS-2FINDEX-3A-3A-40PARSING-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29
+     title="Permalink to this headline"
+     id=x-28COMMONDOC-MARKDOWN-DOCS-2FINDEX-3A-3A-40PARSING-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29></a></h2><pre><code class="">CL-USER&gt; (common-doc.format:parse-document
+          (make-instance 'commondoc-markdown:markdown)
+          &quot;
+# Hello World
+
+* First item
+* Second item
+&quot;)
+#&lt;COMMON-DOC:SECTION title: Hello World, ref: NIL&gt;</code></pre><h2>Writing CommonDoc to Markdown<a class=header-link
+     href=#x-28COMMONDOC-MARKDOWN-DOCS-2FINDEX-3A-3A-40FORMATTING-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29
+     title="Permalink to this headline"
+     id=x-28COMMONDOC-MARKDOWN-DOCS-2FINDEX-3A-3A-40FORMATTING-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29></a></h2><p>Now we can render our document back to Markdown:</p><pre><code class="">CL-USER&gt; (common-doc.format:emit-to-string
+          (make-instance 'commondoc-markdown:markdown)
+          *document*)
+&quot;# Hello World
+
+* First item
+* Second item
+
+
+&quot;</code></pre><h2>API<a class=header-link
+     href=#x-28COMMONDOC-MARKDOWN-DOCS-2FINDEX-3A-3A-40API-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29
+     title="Permalink to this headline"
+     id=x-28COMMONDOC-MARKDOWN-DOCS-2FINDEX-3A-3A-40API-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29></a></h2><div class=reference-bullet><div class=reference-bullet-header><a class=locative-type href=https://github.com/40ants/commondoc-markdown/blob/5df63f3e51a477fc1ea9b4d94a971d4670f36093/src/emitter.lisp#L28>variable</a><div class=reference-object><div class=object-name><a href=#x-28COMMONDOC-MARKDOWN-2FEMITTER-3A-2AGENERATE-SHORT-LINK-REFERENCES-2A-20-28VARIABLE-29-29 id=x-28COMMONDOC-MARKDOWN-2FEMITTER-3A-2AGENERATE-SHORT-LINK-REFERENCES-2A-20-28VARIABLE-29-29>commondoc-markdown/emitter:*generate-short-link-references*</a></div><div class=object-args><span class=locative-args>t</span></div></div><a class=bullet-link href=#x-28COMMONDOC-MARKDOWN-2FEMITTER-3A-2AGENERATE-SHORT-LINK-REFERENCES-2A-20-28VARIABLE-29-29></a></div><div class=bullet-content><p>By default it is <code>T</code>, but you can bind it to <code>NIL</code>,
+to prevent short link references generation.</p></div></div><div class=reference-bullet><div class=reference-bullet-header><a class=locative-type href=https://github.com/40ants/commondoc-markdown/blob/5df63f3e51a477fc1ea9b4d94a971d4670f36093/src/emitter.lisp#L95>variable</a><div class=reference-object><div class=object-name><a href=#x-28COMMONDOC-MARKDOWN-2FEMITTER-3A-2AMIN-LINK-HASH-LENGTH-2A-20-28VARIABLE-29-29 id=x-28COMMONDOC-MARKDOWN-2FEMITTER-3A-2AMIN-LINK-HASH-LENGTH-2A-20-28VARIABLE-29-29>commondoc-markdown/emitter:*min-link-hash-length*</a></div><div class=object-args><span class=locative-args>4</span></div></div><a class=bullet-link href=#x-28COMMONDOC-MARKDOWN-2FEMITTER-3A-2AMIN-LINK-HASH-LENGTH-2A-20-28VARIABLE-29-29></a></div><div class=bullet-content><p>Minumum length of the hash for generated markdown links.
+This works only when <a href="https://40ants.com/commondoc-markdown/#x-28COMMONDOC-MARKDOWN-2FEMITTER-3A-2AGENERATE-SHORT-LINK-REFERENCES-2A-20-28VARIABLE-29-29" data-document="https://40ants.com/commondoc-markdown/" data-node="x-28COMMONDOC-MARKDOWN-2FEMITTER-3A-2AGENERATE-SHORT-LINK-REFERENCES-2A-20-28VARIABLE-29-29"><code>*generate-short-link-references*</code></a> variable
+is set to <code>T</code>.</p></div></div><div class=reference-bullet><div class=reference-bullet-header><a class=locative-type href=https://github.com/40ants/commondoc-markdown/blob/5df63f3e51a477fc1ea9b4d94a971d4670f36093/src/emitter.lisp#L23>variable</a><div class=reference-object><div class=object-name><a href=#x-28COMMONDOC-MARKDOWN-2FEMITTER-3A-2AEMIT-SECTION-ANCHORS-2A-20-28VARIABLE-29-29 id=x-28COMMONDOC-MARKDOWN-2FEMITTER-3A-2AEMIT-SECTION-ANCHORS-2A-20-28VARIABLE-29-29>commondoc-markdown/emitter:*emit-section-anchors*</a></div><div class=object-args><span class=locative-args>t</span></div></div><a class=bullet-link href=#x-28COMMONDOC-MARKDOWN-2FEMITTER-3A-2AEMIT-SECTION-ANCHORS-2A-20-28VARIABLE-29-29></a></div><div class=bullet-content><p>When this variable is <code>T</code> (default), emitter outputs
+a raw html <code>&lt;a name=&quot;some-id&quot;&gt;&lt;/a&gt;</code> before each
+Markdown section.</p></div></div><h2>Roadmap<a class=header-link
+     href=#x-28COMMONDOC-MARKDOWN-DOCS-2FINDEX-3A-3A-40ROADMAP-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29
+     title="Permalink to this headline"
+     id=x-28COMMONDOC-MARKDOWN-DOCS-2FINDEX-3A-3A-40ROADMAP-2040ANTS-DOC-2FLOCATIVES-3ASECTION-29></a></h2><ul><li><p>Make commondoc-markdown compatible with <a href="https://commonmark.org/">CommonMark</a> syntax.</p></li></ul>
+   </div><div class=footer>
+    <hr class=separator>
+    <p class=fineprint>Created with passion by <em>40Ants</em><a class=lisp-logo
+     href="http://lisp-lang.org/">
+      <img
+           src=https://40ants.com/img/made-with-lisp.svg></a>
+   </div>
+  </div>
+ </body>
+</html>
