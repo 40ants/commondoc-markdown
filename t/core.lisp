@@ -20,7 +20,9 @@
   (:import-from #:commondoc-markdown
                 #:make-markdown-link)
   (:import-from #:common-doc.ops
-                #:collect-all-text))
+                #:collect-all-text)
+  (:import-from #:common-doc.format)
+  (:import-from #:common-html))
 (in-package #:commondoc-markdown-test/core)
 
 

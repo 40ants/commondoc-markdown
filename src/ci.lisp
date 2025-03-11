@@ -18,7 +18,10 @@
   :on-pull-request t
   :cache t
   :jobs ((40ants-ci/jobs/linter:linter
-          :check-imports t)))
+          :check-imports t
+          :asdf-systems ("commondoc-markdown"
+                         "commondoc-markdown-docs"
+                         "commondoc-markdown-test"))))
 
 (defworkflow ci
   :on-push-to "master"
