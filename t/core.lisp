@@ -21,7 +21,8 @@
                 #:make-markdown-link)
   (:import-from #:common-doc.ops
                 #:collect-all-text)
-  (:import-from #:common-doc.format))
+  (:import-from #:common-doc.format)
+  (:import-from #:common-html))
 (in-package #:commondoc-markdown-test/core)
 
 
